@@ -1,0 +1,41 @@
+[project]
+name = "agentcore-customer-support-agent"
+version = "0.1.0"
+description = "Customer-support agent on Amazon Bedrock AgentCore: MCP gateway tools, managed knowledge-base RAG, cross-session memory, sandboxed code execution and browsing."
+readme = "README.md"
+requires-python = ">=3.13"
+license = { text = "MIT" }
+dependencies = [
+    "bedrock-agentcore>=1.4.1",
+    "strands-agents>=1.28.0",
+    "strands-agents-tools>=0.2.21",
+    "playwright>=1.58.0",
+    # Imported by strands_tools.browser but not declared by that package.
+    "nest-asyncio>=1.6.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.24",
+    "ruff>=0.6",
+]
+# Only needed on the machine that deploys (provides the `agentcore` CLI).
+deploy = [
+    "bedrock-agentcore-starter-toolkit>=0.3.0",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["E501"]   # long literal expectations read better on one line
